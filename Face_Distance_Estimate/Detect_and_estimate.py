@@ -80,13 +80,13 @@ while True:
         (x, y, w, h) = bbox
         class_name = classes[class_id]
 
-        frame_rect = cv.rectangle(frame, (x, y), (x + w, y + h), BLUE, 2)
+        cv.rectangle(frame, (x, y), (x + w, y + h), BLUE, 2)
         cv.putText(frame, class_name, (x, y - 10), FONT, 1, BLUE, 2)
 
         if frame_distance_width != 0:
             frame_distance_estimated = Distance_finder(person_img_estimated, KNOWN_WIDTH, frame_distance_width)
 
-            cv.putText(frame_rect, f"'s Distance: {frame_distance_estimated}", (x + 120, y - 10), FONT, 1, BLUE, 2)
+            cv.putText(frame, f'Distance: {frame_distance_estimated}', (50, 50), FONT, 1, BLUE, 2)
         
             if frame_distance_estimated <= 30:
                 cv.putText(frame, f'Warning! You are too close to the camera. Please stay back!', (100, 360), FONT, 1, RED, 2)
