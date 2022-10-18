@@ -23,28 +23,6 @@ while True:
     isTrue, frame = capture.read()
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-
-    # leftEyes_haarCascade
-    leftEyes_dtc = leftEyes_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
-    
-    for (lx, ly, lw, lh) in leftEyes_dtc:
-        leftEyes_roi = frame_gray[ly:ly + lh, lx:lx + lw]
-        label, confidence = face_recognizer.predict(leftEyes_roi)
-
-    # rightEyes_haarCascade
-    rightEyes_dtc = rightEyes_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
-    
-    for (rx, ry, rw, rh) in rightEyes_dtc:
-        rightEyes_roi = frame_gray[ry:ry + rh, rx:rx + rw]
-        label, confidence = face_recognizer.predict(rightEyes_roi)
-
-    # smile_haarCascade
-    smile_dtc = smile_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
-
-    for (sx, sy, sw, sh) in smile_dtc:
-        smile_roi = frame_gray[sy:sy + sh, sx:sx + sw]
-        label, confidence = face_recognizer.predict(smile_roi)
-
     # faces_haarCascade
     faces_dtc = faces_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
 
@@ -54,6 +32,33 @@ while True:
 
         cv.putText(frame, str(people[label]), (x, y - 10), FONT, 1, GREEN, 2)
         cv.rectangle(frame, (x, y), (x + w, y + h), GREEN, 2)
+
+    # leftEyes_haarCascade
+    leftEyes_dtc = leftEyes_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
+    
+    for (lx, ly, lw, lh) in leftEyes_dtc:
+        leftEyes_roi = frame_gray[ly:ly + lh, lx:lx + lw]
+        label, confidence = face_recognizer.predict(leftEyes_roi)
+        
+        cv.rectangle(frame, (lx, ly), (lx + lw, ly + lh), GREEN, 2)
+
+    # rightEyes_haarCascade
+    rightEyes_dtc = rightEyes_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
+    
+    for (rx, ry, rw, rh) in rightEyes_dtc:
+        rightEyes_roi = frame_gray[ry:ry + rh, rx:rx + rw]
+        label, confidence = face_recognizer.predict(rightEyes_roi)
+
+        cv.rectangle(frame, (rx, ry), (rx + rw, ry + rh), GREEN, 2)
+
+    # smile_haarCascade
+    smile_dtc = smile_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
+
+    for (sx, sy, sw, sh) in smile_dtc:
+        smile_roi = frame_gray[sy:sy + sh, sx:sx + sw]
+        label, confidence = face_recognizer.predict(smile_roi)
+
+        cv.rectangle(frame, (sx, sy), (sx + sw, sy + sh), GREEN, 2)
 
     cv.imshow('Video Face Recognizer', frame)
 
