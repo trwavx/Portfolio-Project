@@ -7,6 +7,20 @@ RED = (0, 0, 255)
 
 FONT = cv.FONT_HERSHEY_COMPLEX
 
+CONFIDENCE_THRESHOLD = 0.4
+NMS_THRESHOLD = 0.3
+
+net = cv.dnn.readNet('dnn_model/yolov4-tiny.cfg', 'dnn_model/yolov4-tiny.weights')
+model = cv.dnn_DetectionModel(net)
+model.setInputParams(size=(320, 320), scale=1/255)
+
+classes = []
+
+with open('dnn_model/classes.txt', 'r') as file:
+    for class_name in file.readlines():
+        class_name = class_name.strip()
+        classes.append(class_name)
+
 faces_haarCascade = cv.CascadeClassifier('haarcascades\haarcascade_frontalface_default.xml')
 leftEyes_haarCascade = cv.CascadeClassifier('haarcascades\haarcascade_lefteye_2splits.xml')
 rightEyes_haarCascade = cv.CascadeClassifier('haarcascades\haarcascade_righteye_2splits.xml')
@@ -21,9 +35,19 @@ capture = cv.VideoCapture('Videos\BenAfflek4.mp4')
 
 while True:
     isTrue, frame = capture.read()
+    # Detect Objects
+    class_ids, scores, bboxes = model.detect(frame, CONFIDENCE_THRESHOLD, NMS_THRESHOLD)
+
+    for (class_id, scores, bbox) in zip(class_ids, scores, bboxes):
+        (x, y, w, h) = bbox
+        class_name = classes[class_id]
+        
+        cv.putText(frame, class_name, (x, y - 10), FONT, 1, BLUE, 2)
+        cv.rectangle(frame, (x, y), (x + w, y + h), BLUE, 2)
+
     frame_gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-    # faces_haarCascade
+    # Regcognize Face
     faces_dtc = faces_haarCascade.detectMultiScale(frame_gray, 1.6, 6)
 
     for (x, y, w, h) in faces_dtc:
