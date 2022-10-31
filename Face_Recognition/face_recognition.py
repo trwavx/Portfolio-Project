@@ -4,7 +4,6 @@ import torch
 from torchvision import transforms
 import numpy as np
 from PIL import Image
-import time
 
 frame_size = (640, 480)
 
@@ -31,21 +30,18 @@ def load_faceslist():
     return embeds, names
 
 def inference(model, face, local_embeds, threshold=3):
-    #local: [n,512] voi n la so nguoi trong faceslist
     embeds = []
-    # print(trans(face).unsqueeze(0).shape)
     embeds.append(model(trans(face).to(device).unsqueeze(0)))
-    detect_embeds = torch.cat(embeds) #[1,512]
-    # print(detect_embeds.shape)
-                    #[1,512,1]                                      [1,512,n]
+
+    detect_embeds = torch.cat(embeds)
+
     norm_diff = detect_embeds.unsqueeze(-1) - torch.transpose(local_embeds, 0, 1).unsqueeze(0)
-    # print(norm_diff)
-    norm_score = torch.sum(torch.pow(norm_diff, 2), dim=1) #(1,n), moi cot la tong khoang cach euclide so vs embed moi
+    norm_score = torch.sum(torch.pow(norm_diff, 2), dim=1)
     
     min_dist, embed_idx = torch.min(norm_score, dim=1)
 
     print(min_dist * power, names[embed_idx])
-    # print(min_dist.shape)
+
     if min_dist * power > threshold:
         return -1, -1
     
@@ -59,7 +55,7 @@ def extract_face(box, img, margin=20):
     margin = [
         margin * (box[2] - box[0]) / (face_size - margin),
         margin * (box[3] - box[1]) / (face_size - margin),
-    ] #tạo margin bao quanh box cũ
+    ]
 
     box = [
         int(max(box[0] - margin[0] / 2, 0)),
@@ -117,13 +113,6 @@ if __name__ == "__main__":
                         frame = cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 0, 255), 6)
                         frame = cv2.putText(frame, 'Unknown', (bbox[0], bbox[1]), cv2.FONT_HERSHEY_DUPLEX, 2, (0, 255, 0), 2, cv2.LINE_8)
 
-            new_frame_time = time.time()
-            fps = 1 / (new_frame_time - prev_frame_time)
-            prev_frame_time = new_frame_time
-            fps = str(int(fps))
-
-            cv2.putText(frame, fps, (7, 70), cv2.FONT_HERSHEY_DUPLEX, 3, (100, 255, 0), 3, cv2.LINE_AA)
-
         cv2.imshow('Face Recognition', frame)
         
         if cv2.waitKey(1) & 0xFF == 27:
@@ -131,4 +120,3 @@ if __name__ == "__main__":
 
     cap.release()
     cv2.destroyAllWindows()
-    #+": {:.2f}".format(score)
