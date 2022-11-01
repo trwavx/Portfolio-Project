@@ -27,6 +27,7 @@ while cap.isOpened() and count:
         path = str(USR_PATH + '/{}.jpg'.format(str(datetime.now())[:-7].replace(":", "-").replace(" ", "-")+str(count)))
         face_img = mtcnn(frame, save_path=path)
         count -= 1
+        
     leap += 1
 
     cv2.imshow('Face Capturing', frame)
