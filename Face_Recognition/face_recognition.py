@@ -104,6 +104,7 @@ if __name__ == "__main__":
                     bbox = list(map(int, box.tolist()))
                     face = extract_face(bbox, frame)
                     idx, score = inference(model, face, embeddings)
+                    
                     if idx != -1:
                         frame = cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 0, 255), 6)
                         score = torch.Tensor.cpu(score[0]).detach().numpy() * power
