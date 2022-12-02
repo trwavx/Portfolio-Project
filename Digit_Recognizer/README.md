@@ -1,3 +1,3 @@
-Kaggle's Competitions: https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques
+Kaggle's Competitions: https://www.kaggle.com/competitions/digit-recognizer
 
-My work: https://www.kaggle.com/code/anhvutruong/house-prices
+My work: https://www.kaggle.com/code/anhvutruong/digit-recognition-using-cnn
