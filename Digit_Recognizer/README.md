@@ -1,6 +1,6 @@
-* Kaggle's Competitions: https://www.kaggle.com/competitions/digit-recognizer
+Kaggle's Competitions: https://www.kaggle.com/competitions/digit-recognizer
 
-* My work: https://www.kaggle.com/code/anhvutruong/digit-recognition-using-cnn
+My work: https://www.kaggle.com/code/anhvutruong/digit-recognition-using-cnn
 
 * Score: 0.98978
 
