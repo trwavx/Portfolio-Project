@@ -1,5 +1,5 @@
 ## USAGE
-This is a FaceNet and MTCNN inference from [this Repository](https://github.com/timesler/facenet-pytorch).
+This is a FaceNet and MTCNN inference from https://github.com/timesler/facenet-pytorch
 1. Requirements:
     ```bash
     # Install with Pip
