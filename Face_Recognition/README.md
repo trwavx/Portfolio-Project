@@ -4,7 +4,7 @@ This is a FaceNet and MTCNN inference from https://github.com/timesler/facenet-p
     ```bash
     # Install with Pip
     !pip install numpy
-    !pip install opencv-python
+    !pip install opencv-contrib-python
     !pip install torch torchvision torchaudio
     !pip install facenet-pytorch
 
